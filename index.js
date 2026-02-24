@@ -35,6 +35,7 @@ function renderGrid(dimension) {
 function cellClickHandler(row, col) {
     // Пиши код тут
     console.log(`Clicked on cell: ${row}, ${col}`);
+
     if (gameField[row][col] === EMPTY) {
         if (isCross) {
             gameField[row][col] = CROSS;
@@ -46,11 +47,44 @@ function cellClickHandler(row, col) {
         }
         isCross = !isCross;
     }
+    let winner = checkForWin(row, col);
+    if (winner){
+        alert(winner)
+    }
+    let isEnd = true;
+    for (let i = 0; i < 3; i++){
+        for (let j = 0; j < 3; j++){
+            if (gameField[i][j]  === EMPTY) {
+                isEnd = false;
+            }
+        }
+    }
+    if (isEnd){
+        alert('Победила дружба')
+    }
 
     /* Пользоваться методом для размещения символа в клетке так:
         renderSymbolInCell(ZERO, row, col);
      */
 }
+
+function checkForWin(row, col){
+    if (gameField[row][0] !== EMPTY && gameField[row][0] === gameField[row][1] && gameField[row][1] === gameField[row][2]){
+        return gameField[row][0]
+    }
+    if (gameField[0][col] !== EMPTY && gameField[0][col] === gameField[1][col] && gameField[1][col]=== gameField[2][col]){
+        return gameField[0][col]
+    }
+    if (gameField[0][0] !== EMPTY && gameField[0][0] === gameField[1][1] && gameField[1][1] === gameField[2][2]){
+        return gameField[0][0]
+    }
+    if (gameField[0][2] !== EMPTY && gameField[0][2] === gameField[1][1] && gameField[1][1] === gameField[2][0]){
+        return gameField[0][2]
+    }
+    return false;
+
+}
+
 
 function renderSymbolInCell(symbol, row, col, color = '#333') {
     const targetCell = findCell(row, col);
