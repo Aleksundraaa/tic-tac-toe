@@ -7,6 +7,7 @@ const gameField = [
     [EMPTY, EMPTY, EMPTY]
 ]
 let isCross = true;
+let isWin = false;
 
 const container = document.getElementById('fieldWrapper');
 
@@ -35,31 +36,34 @@ function renderGrid(dimension) {
 function cellClickHandler(row, col) {
     // Пиши код тут
     console.log(`Clicked on cell: ${row}, ${col}`);
+    if (isWin) {
+        return;
+    }
 
     if (gameField[row][col] === EMPTY) {
         if (isCross) {
             gameField[row][col] = CROSS;
             renderSymbolInCell(CROSS, row, col);
-        }
-        else {
+        } else {
             gameField[row][col] = ZERO;
             renderSymbolInCell(ZERO, row, col);
         }
         isCross = !isCross;
     }
     let winner = checkForWin(row, col);
-    if (winner){
+    if (winner) {
         alert(winner)
+        isWin = true;
     }
     let isEnd = true;
-    for (let i = 0; i < 3; i++){
-        for (let j = 0; j < 3; j++){
-            if (gameField[i][j]  === EMPTY) {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (gameField[i][j] === EMPTY) {
                 isEnd = false;
             }
         }
     }
-    if (isEnd){
+    if (isEnd) {
         alert('Победила дружба')
     }
 
@@ -68,17 +72,30 @@ function cellClickHandler(row, col) {
      */
 }
 
-function checkForWin(row, col){
-    if (gameField[row][0] !== EMPTY && gameField[row][0] === gameField[row][1] && gameField[row][1] === gameField[row][2]){
+function checkForWin(row, col) {
+    if (gameField[row][0] !== EMPTY && gameField[row][0] === gameField[row][1] && gameField[row][1] === gameField[row][2]) {
+        renderSymbolInCell(gameField[row][0], row, 0, 'red');
+        renderSymbolInCell(gameField[row][0], row, 1, 'red');
+        renderSymbolInCell(gameField[row][0], row, 2, 'red');
         return gameField[row][0]
     }
-    if (gameField[0][col] !== EMPTY && gameField[0][col] === gameField[1][col] && gameField[1][col]=== gameField[2][col]){
+    if (gameField[0][col] !== EMPTY && gameField[0][col] === gameField[1][col] && gameField[1][col] === gameField[2][col]) {
+        renderSymbolInCell(gameField[0][col], 0, col, 'red');
+        renderSymbolInCell(gameField[0][col], 1, col, 'red');
+        renderSymbolInCell(gameField[0][col], 2, col, 'red');
+
         return gameField[0][col]
     }
-    if (gameField[0][0] !== EMPTY && gameField[0][0] === gameField[1][1] && gameField[1][1] === gameField[2][2]){
+    if (gameField[0][0] !== EMPTY && gameField[0][0] === gameField[1][1] && gameField[1][1] === gameField[2][2]) {
+        renderSymbolInCell(gameField[0][0], 0, 0, 'red')
+        renderSymbolInCell(gameField[0][0], 1, 1, 'red')
+        renderSymbolInCell(gameField[0][0], 2, 2, 'red')
         return gameField[0][0]
     }
-    if (gameField[0][2] !== EMPTY && gameField[0][2] === gameField[1][1] && gameField[1][1] === gameField[2][0]){
+    if (gameField[0][2] !== EMPTY && gameField[0][2] === gameField[1][1] && gameField[1][1] === gameField[2][0]) {
+        renderSymbolInCell(gameField[0][2], 0, 2, 'red')
+        renderSymbolInCell(gameField[0][2], 1, 1, 'red')
+        renderSymbolInCell(gameField[0][2], 2, 0, 'red')
         return gameField[0][2]
     }
     return false;
@@ -105,6 +122,14 @@ function addResetListener() {
 
 function resetClickHandler() {
     console.log('reset!');
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            gameField[i][j] = ' ';
+            renderSymbolInCell(EMPTY, i, j)
+        }
+    }
+    isCross = true;
+    isWin = false;
 }
 
 
