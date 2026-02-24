@@ -52,8 +52,9 @@ function cellClickHandler(row, col) {
     }
     let winner = checkForWin(row, col);
     if (winner) {
-        alert(winner)
+        setTimeout(() => alert(winner), 0);
         isWin = true;
+        return;
     }
     let isEnd = true;
     for (let i = 0; i < 3; i++) {
@@ -64,7 +65,7 @@ function cellClickHandler(row, col) {
         }
     }
     if (isEnd) {
-        alert('Победила дружба')
+        setTimeout(() => alert("Победила дружба"), 0);
     }
 
     /* Пользоваться методом для размещения символа в клетке так:
